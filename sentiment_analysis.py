@@ -9,22 +9,23 @@ import sys
 # Dict to handle non-BMP characters
 nonBmpMap = dict.fromkeys(range(0x10000, sys.maxunicode + 1), 0xfffd)
 
-# Twitter Authentication variables, go to https://apps.twitter.com/
+# Twitter authentication variables
 consumerKey = ''
 consumerSecret = ''
 accessKey = ''
 accessSecret = ''
 
-# Doing a sample Watson analysis request
+# Watson authentication variables
 wUN = ''
 wPW = ''
 wHD = {'Content-Type': 'application/json'}
 
-# Get a stream of tweets:
+# Aggregate analysis of a tweet stream on selected topic
+topic = ""
 pos, neu, neg, cnt = [0 for x in range(4)]
 
 twapi = TwitterAPI(consumerKey, consumerSecret, accessKey, accessSecret)
-stream = twapi.request('statuses/filter', {'track':'mcdonalds'})
+stream = twapi.request('statuses/filter', {'track':topic})
 for tweet in stream.get_iterator():
     if 'extended_tweet' in tweet: wTX = tweet['extended_tweet']['full_text'].encode('latin-1', 'ignore').decode('latin-1')
     elif 'text' in tweet: wTX = tweet['text'].encode('latin-1', 'ignore').decode('latin-1')
